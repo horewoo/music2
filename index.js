@@ -185,7 +185,7 @@ const audioFolder = path.join(__dirname, 'musica'); // Carpeta donde están los 
 client.once('ready', () => {
     console.log(`Bot está listo como ${client.user.tag}`);
 
-    const voiceChannelId = '1300237382238601266';
+    const voiceChannelId = '1300842956537856000';
     const guild = client.guilds.cache.get('1284557762553974814'); 
 
     // Encuentra el canal de voz por ID
