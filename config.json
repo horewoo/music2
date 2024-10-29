@@ -1,0 +1,8 @@
+{
+	"prefix": ":",
+	"verifyRole": "1016704626956963870",
+  "owner": "530934976074743809",
+	"messages": {
+		"COOLDOWN_MESSAGE": "Tú tienes un cooldown de `<duration>`! Bajale tantito..."
+	}
+}
