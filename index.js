@@ -105,7 +105,7 @@ client.once('ready', () => {
             player.play(resource);
 
             client.user.setPresence({
-                activities: [{ name: `♡ ${path.basename(initialFile, '.mp3')}`, type: ActivityType.Listening }],
+                activities: [{ name: `INICIANDO: ${path.basename(initialFile, '.mp3')}`, type: ActivityType.Listening }],
                 status: 'dnd',
             });
         };
