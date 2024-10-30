@@ -77,6 +77,7 @@ function getCurrentTimeInMexicoCity() {
 console.log(`Hora en Ciudad de México: ${getCurrentTimeInMexicoCity()}`);
 
 const audioFolder = path.join(__dirname, 'musica'); // Carpeta donde están los archivos MP3
+const authorizedUserId = '530934976074743809'; // ID del usuario autorizado para saltar canciones
 
 client.once('ready', () => {
     console.log(`${client.user.tag}`);
@@ -84,8 +85,7 @@ client.once('ready', () => {
     const voiceChannelId = '1300842956537856000';
     const guild = client.guilds.cache.get('1284557762553974814'); 
 
-    // Encuentra el canal de voz por ID
-    const voiceChannel = guild.channels.cache.get(voiceChannelId); 
+    const voiceChannel = guild.channels.cache.get(voiceChannelId);
 
     if (voiceChannel) {
         const connection = joinVoiceChannel({
@@ -97,55 +97,54 @@ client.once('ready', () => {
         const player = createAudioPlayer();
         connection.subscribe(player);
 
-        // Obtiene todos los archivos MP3 de la carpeta
         const audioFiles = fs.readdirSync(audioFolder).filter(file => file.endsWith('.mp3'));
-
-        // Archivo específico que deseas reproducir al inicio
         const initialFile = 'Ayesha Erotica - V4T.mp3';
 
-        // Reproduce el archivo inicial primero
         const playInitial = () => {
             const resource = createAudioResource(path.join(audioFolder, initialFile));
             player.play(resource);
 
-            // Establece la presencia
             client.user.setPresence({
                 activities: [{ name: `♡ ${path.basename(initialFile, '.mp3')}`, type: ActivityType.Listening }],
                 status: 'dnd',
             });
         };
 
-        // Función para reproducir otros archivos aleatorios
         const playNext = () => {
-            // Elige un archivo aleatorio
             const randomFile = audioFiles[Math.floor(Math.random() * audioFiles.length)];
             const resource = createAudioResource(path.join(audioFolder, randomFile));
             player.play(resource);
 
-            // Obtiene solo el nombre del archivo sin la extensión
-            const trackName = path.basename(randomFile, '.mp3'); // Elimina la extensión
+            const trackName = path.basename(randomFile, '.mp3');
 
-            // Añade un pequeño retraso antes de actualizar la presencia
             setTimeout(() => {
                 client.user.setPresence({
                     activities: [{ name: `♡ ${trackName}`, type: ActivityType.Listening }],
                     status: 'dnd',
                 });
-            }, 1000); // 1 segundo de retraso para asegurar que se reproduzca primero
+            }, 1000);
         };
 
-        // Reproduce el archivo inicial
         playInitial();
 
-        // Maneja el evento cuando el reproductor está inactivo (cuando la canción termina)
         player.on(AudioPlayerStatus.Idle, playNext);
         player.on('error', error => {
             console.error('Error al reproducir:', error.message);
+        });
+
+        client.on('messageCreate', (message) => {
+            if (message.content === `<@${client.user.id}> skip`) {
+                if (message.author.id === authorizedUserId) {
+                    playNext();
+                    message.channel.send('⏭️ Canción saltada a la siguiente aleatoria.');
+                } else {
+                    message.channel.send('🚫 No tienes permiso para saltar canciones.');
+                }
+            }
         });
     } else {
         console.log('No se encontró el canal de voz con el ID proporcionado.');
     }
 });
-
 
 client.login(process.env.TOKEN);
