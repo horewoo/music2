@@ -98,7 +98,7 @@ client.once('ready', () => {
         connection.subscribe(player);
 
         const audioFiles = fs.readdirSync(audioFolder).filter(file => file.endsWith('.mp3'));
-        const initialFile = 'Ayesha Erotica - V4T.mp3';
+        const initialFile = 'DreamKiller - Lipsing.mp3';
 
         const playInitial = () => {
             const resource = createAudioResource(path.join(audioFolder, initialFile));
