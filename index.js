@@ -136,9 +136,9 @@ client.once('ready', () => {
             if (message.content === `<@${client.user.id}> skip`) {
                 if (message.author.id === authorizedUserId) {
                     playNext();
-                    message.channel.send('⏭️ Canción saltada a la siguiente aleatoria.');
+                    message.channel.send('<:kato_cat:1298549152157798431> | *Cambiando de canción.*');
                 } else {
-                    message.channel.send('🚫 No tienes permiso para saltar canciones.');
+                    message.channel.send('<:kato_cat:1298549152157798431> | *No hay suficientes permisos para ejecutar esta orden.*');
                 }
             }
         });
